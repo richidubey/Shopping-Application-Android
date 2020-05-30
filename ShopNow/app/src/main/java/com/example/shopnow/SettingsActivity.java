@@ -61,10 +61,10 @@ public class SettingsActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Please enter city and state " +
                             "both", Toast.LENGTH_LONG).show();
                 }else{
-                    if(redZone.contains(enteredCity) || redZone.contains(enteredState)){
+                    if(redZone.contains(enteredCity)){
                         Toast.makeText(getApplicationContext(), "You are in red zone; Order " +
                                 "time MWF   10:00AM to 1:00PM only", Toast.LENGTH_LONG).show();
-                    }else if(greenZone.contains(enteredCity) || greenZone.contains(enteredState)){
+                    }else {
                         Toast.makeText(getApplicationContext(), "You are in green zone; " +
                                 "Select Time Slot", Toast.LENGTH_LONG).show();
                         spin.setVisibility(View.VISIBLE);
