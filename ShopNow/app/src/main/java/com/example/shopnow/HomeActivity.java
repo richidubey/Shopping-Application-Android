@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -56,28 +57,21 @@ public class HomeActivity extends AppCompatActivity {
         bookListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                Toast.makeText(getApplicationContext(), "Clicked", Toast.LENGTH_LONG);
                 switch (position){
                     case 0:
+                        Toast.makeText(getApplicationContext(), "Clicked", Toast.LENGTH_LONG);
                         startActivity(new Intent(HomeActivity.this, FruitActivity.class));
                         break;
                     case 1:
+                        Toast.makeText(getApplicationContext(), "Clicked", Toast.LENGTH_LONG);
                         startActivity(new Intent(HomeActivity.this, VegetableActivity.class));
                         break;
                     case 2:
+                        Toast.makeText(getApplicationContext(), "Clicked", Toast.LENGTH_LONG);
                         startActivity(new Intent(HomeActivity.this, BakeryActivity.class));
                         break;
                 }
-            }
-        });
-
-        bookListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Items Items = mAdapter.getItem(position);
-                String weburl = Items.getmWebUrl();
-                Uri uri = Uri.parse(weburl);
-                Intent intent = new Intent(Intent.ACTION_VIEW,uri);
-                startActivity(intent);
             }
         });
 

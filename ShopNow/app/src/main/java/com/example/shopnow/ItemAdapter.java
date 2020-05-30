@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -42,6 +43,9 @@ public class ItemAdapter extends ArrayAdapter<Items>{
 
         TextView textView3 = (TextView)convertView.findViewById(R.id.section_text_view);
         textView3.setText(items.getmSection());
+
+        RatingBar ratingBar = (RatingBar)convertView.findViewById(R.id.rating);
+        ratingBar.setRating(5);
 
         return convertView;
     }

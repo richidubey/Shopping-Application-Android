@@ -3,13 +3,17 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <fragment
-        android:name="com.example.android.thenewshouse.SettingsActivity$NewsPreferenceFragment"
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        tools:context="com.example.android.thenewshouse.SettingsActivity"
+    <ListView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    </fragment>
+        android:layout_height="wrap_content">
+
+    </ListView>
+
+    <!--<fragment-->
+        <!--xmlns:tools="http://schemas.android.com/tools"-->
+        <!--tools:context=".SettingsActivity"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent">-->
+    <!--</fragment>-->
 
 </LinearLayout>
