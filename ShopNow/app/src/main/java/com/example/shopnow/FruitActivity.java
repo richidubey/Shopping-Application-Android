@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -31,11 +32,19 @@ public class FruitActivity extends AppCompatActivity {
 
     private List<Categories> dummyItems;
     private CategoryAdapter mAdapter;
+    Button checkoutButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category);
+        checkoutButton = (Button)findViewById(R.id.checkoutButton);
+        checkoutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(FruitActivity.this, SettingsActivity.class));
+            }
+        });
 
         dummyItems = new ArrayList<>();
         Bitmap bm ;

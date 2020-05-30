@@ -26,12 +26,9 @@ import java.util.List;
 
 public class HomeActivity extends AppCompatActivity {
 
-    private static final int NEWS_LOADER_ID = 1;
-    private static final String NEWS_APP_URL = "https://content.guardianapis.com/search";
     private ItemAdapter mAdapter;
 
-    String[] mobileArray = {"Android","IPhone","WindowsMobile","Blackberry",
-            "WebOS","Ubuntu","Windows7","Max OS X"};
+
     List<Items> dummyItems;
 
     @Override
@@ -68,6 +65,18 @@ public class HomeActivity extends AppCompatActivity {
                         startActivity(new Intent(HomeActivity.this, VegetableActivity.class));
                         break;
                     case 2:
+                        Toast.makeText(getApplicationContext(), "Clicked", Toast.LENGTH_LONG);
+                        startActivity(new Intent(HomeActivity.this, BakeryActivity.class));
+                        break;
+                    case 3:
+                        Toast.makeText(getApplicationContext(), "Clicked", Toast.LENGTH_LONG);
+                        startActivity(new Intent(HomeActivity.this, FruitActivity.class));
+                        break;
+                    case 4:
+                        Toast.makeText(getApplicationContext(), "Clicked", Toast.LENGTH_LONG);
+                        startActivity(new Intent(HomeActivity.this, VegetableActivity.class));
+                        break;
+                    case 5:
                         Toast.makeText(getApplicationContext(), "Clicked", Toast.LENGTH_LONG);
                         startActivity(new Intent(HomeActivity.this, BakeryActivity.class));
                         break;

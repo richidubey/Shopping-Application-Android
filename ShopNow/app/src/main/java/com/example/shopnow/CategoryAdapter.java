@@ -66,8 +66,14 @@ public class CategoryAdapter extends ArrayAdapter<Categories>{
                     Toast.makeText(getContext(),"Cannot decrement further", Toast.LENGTH_SHORT).show();
                 }else{
                     itemSelected--;
-                    if(addToCartList.size()>0)
-                        Toast.makeText(getContext(), addToCartList.get(addToCartList.size()-1)+" removed from cart", Toast.LENGTH_LONG).show();
+                    StringBuilder allitems = new StringBuilder();
+                    for(int i=0;i<addToCartList.size();i++){
+                        allitems.append(addToCartList.get(i)+"; ");
+                    }
+                    if(addToCartList.size()>0) {
+                        Toast.makeText(getContext(), allitems, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), addToCartList.get(addToCartList.size() - 1) + " removed from cart", Toast.LENGTH_LONG).show();
+                    }
                     String itemname = textView1.getText().toString();
                     addToCartList.remove(itemname);
 //                    Toast.makeText(getContext(),itemname+" removed from cart", Toast.LENGTH_SHORT).show();
@@ -90,7 +96,12 @@ public class CategoryAdapter extends ArrayAdapter<Categories>{
                     addToCartList.add(itemname);
                     //Toast.makeText(getContext(),itemname+" added from cart", Toast.LENGTH_SHORT).show();
                     countItems.setText(Integer.toString(itemSelected));
-                    Toast.makeText(getContext(), addToCartList.get(addToCartList.size()-1), Toast.LENGTH_LONG).show();
+                    //Toast.makeText(getContext(), addToCartList.get(addToCartList.size()-1), Toast.LENGTH_LONG).show();
+                    StringBuilder allitems = new StringBuilder();
+                    for(int i=0;i<addToCartList.size();i++){
+                        allitems.append(addToCartList.get(i)+"; ");
+                    }
+                    Toast.makeText(getContext(), allitems, Toast.LENGTH_LONG).show();
                 }
             }
         });
