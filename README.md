@@ -17,5 +17,5 @@ https://github.com/Ali-Tahir4024/Shopify
 
 https://github.com/gauravburjwal/shopping-website
 
-https://github.com/giorgi-m/online-shop
+https://github.com/giorgi-m/online-shop -- Errors with npm
 
