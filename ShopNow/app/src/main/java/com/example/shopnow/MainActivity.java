@@ -3,9 +3,11 @@ package com.example.shopnow;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -24,108 +26,78 @@ import java.util.concurrent.TimeUnit;
 public class MainActivity extends AppCompatActivity {
 
     EditText editTextPhone, editTextCode;
-    FirebaseAuth mAuth;
+    private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener mAuthListener;
+
+    private EditText mEmail, mPassword;
+    private Button btnSignIn,btnSignOut,btnAddItems;
     String codeSent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        editTextCode = findViewById(R.id.verificationCodeEditText);
-        editTextPhone = findViewById(R.id.phoneEditText);
-
         mAuth = FirebaseAuth.getInstance();
+        mEmail = (EditText) findViewById(R.id.phoneEditText);
+        mPassword = (EditText) findViewById(R.id.verificationCodeEditText);
+        btnSignIn = (Button) findViewById(R.id.logInButton);
+        btnSignOut = (Button) findViewById(R.id.verifyButton);
+        //btnAddItems = (Button) findViewById(R.id.add_item_screen);
 
-        findViewById(R.id.verifyButton).setOnClickListener(new View.OnClickListener() {
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    // User is signed in
+                    //Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
+                    toastMessage("Successfully signed in with: " + user.getEmail());
+                } else {
+                    // User is signed out
+                    //Log.d(TAG, "onAuthStateChanged:signed_out");
+                    toastMessage("Successfully signed out.");
+                }
+                // ...
+            }
+        };
+        mAuth.addAuthStateListener(mAuthListener);
+        btnSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                verifySignInCode();
+                String email = mEmail.getText().toString();
+                String pass = mPassword.getText().toString();
+                if (!email.equals("") && !pass.equals("")) {
+                    //mAuth.signInWithEmailAndPassword(email, pass);
+                    mAuth.createUserWithEmailAndPassword(email, pass).addOnCompleteListener(MainActivity.this, new OnCompleteListener<AuthResult>() {
+                                @Override
+                                public void onComplete(@NonNull Task<AuthResult> task) {
+                                    toastMessage("Account Created");
+                                }
+                            });
+                    toastMessage("Yay!");
+                    startActivity(new Intent(MainActivity.this, HomeActivity.class));
+                } else {
+                    toastMessage("You didn't fill in all the fields.");
+                }
             }
         });
-
-        findViewById(R.id.logInButton).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(getApplicationContext(), "Logging in", Toast.LENGTH_SHORT).show();
-                sendVerificationCode();
-            }
-        });
-
+    }
+    private void toastMessage(String message){
+        Toast.makeText(this,message,Toast.LENGTH_SHORT).show();
+    }
+    @Override
+    public void onStart() {
+        super.onStart();
+        mAuth.addAuthStateListener(mAuthListener);
     }
 
-    private void verifySignInCode(){
-
-        String code = editTextCode.getText().toString();
-        if(code.isEmpty()){
-            editTextCode.setError("Code is required");
-            editTextCode.requestFocus();
-            return;
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (mAuthListener != null) {
+            mAuth.removeAuthStateListener(mAuthListener);
         }
-        PhoneAuthCredential credential = PhoneAuthProvider.getCredential(codeSent, code);
-        signInWithPhoneAuthCredential(credential);
     }
-
-    private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
-        mAuth.signInWithCredential(credential)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(getApplicationContext(), "Login Successful",
-                                    Toast.LENGTH_LONG).show();
-//                            // Sign in success, update UI with the signed-in user's information
-//                            Log.d(TAG, "signInWithCredential:success");
-//
-//                            FirebaseUser user = task.getResult().getUser();
-//                            // ...
-                        } else {
-//                            // Sign in failed, display a message and update the UI
-//                            Log.w(TAG, "signInWithCredential:failure", task.getException());
-                            if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
-                                // The verification code entered was invalid
-                                Toast.makeText(getApplicationContext(), "Invalid Code",
-                                        Toast.LENGTH_LONG).show();
-                            }
-                        }
-                    }
-                });
-    }
-
-    private void sendVerificationCode(){
-        String phone = editTextPhone.getText().toString();
-        if(phone.isEmpty()){
-            editTextPhone.setError("Phone Number is required");
-            editTextPhone.requestFocus();
-            return;
-        }
-        if(phone.length()<10){
-            editTextPhone.setError("Please enter a valid phone number");
-            editTextPhone.requestFocus();
-            return;
-        }
-        PhoneAuthProvider.getInstance().verifyPhoneNumber(
-                phone,        // Phone number to verify
-                10,                 // Timeout duration
-                TimeUnit.SECONDS,   // Unit of timeout
-                this,               // Activity (for callback binding)
-                mCallbacks);        // OnVerificationStateChangedCallbacks
-    }
-    PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
-        @Override
-        public void onVerificationCompleted(PhoneAuthCredential phoneAuthCredential) {
-
-        }
-
-        @Override
-        public void onVerificationFailed(FirebaseException e) {
-
-        }
-
-        @Override
-        public void onCodeSent(String s, PhoneAuthProvider.ForceResendingToken forceResendingToken) {
-            //super.onCodeSent(s, forceResendingToken);
-            codeSent = s;
-        }
-    };
 }
